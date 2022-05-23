@@ -1,33 +1,29 @@
 #include <iostream>
 #include <vector>
+#include <utility>
 using namespace std;
 
-int g_dp0[41];
-int g_dp1[41];
-
-void fibonacci(int n)
-{
-	if (g_dp0[n] == 0)
-		g_dp0[n] = 
-}
-
-void 
-
+#define BUFFER_SIZE 40
+pair<int, int> g_dp[BUFFER_SIZE + 1];
 
 int main(void)
 {
-	int T, temp;
-	vector<int> vi;
+	int T;
+	vector<pair<int, int>> answer;
 
+	g_dp[0] = make_pair(1, 0);
+	g_dp[1] = make_pair(0, 1);
 	cin>>T;
 	for (int i = 0; i < T; i++)
 	{
-		cin>>temp;
-		vi.push_back(temp);
+		int n;
+
+		cin>>n;
+		for (int j = 2; j <= n; j++)
+			g_dp[j] = make_pair(g_dp[j - 1].second, g_dp[j - 1].first + g_dp[j - 1].second);
+		answer.push_back(make_pair(g_dp[n].first, g_dp[n].second));
 	}
 	for (int i = 0; i < T; i++)
-	{
-		fibonacci(vi[i]);
-	}
+		cout<<answer[i].first<<" "<<answer[i].second<<'\n';
 	return (0);
 }
