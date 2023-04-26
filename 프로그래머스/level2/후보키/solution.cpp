@@ -51,24 +51,31 @@ vector<string> dfs(const vector<vector<string>>& relation, vector<int> c) {
     return possible;
 }
 
-bool cmp(const string &s1, const string &s2) {
-    return s1.length() < s2.length();
-}
-
 vector<string> checkUnique(vector<string>& possible) {
-    sort(possible.begin(), possible.end(), cmp);
-    
     vector<string> ans;
-    ans.push_back(possible[0]);
-    for (int i = 1; i < possible.size(); i++) {
-        bool isUnique = true;
-        for (int j = 0; j < ans.size(); j++) {
-            if (possible[i].find(ans[j]) != string::npos) {
-                isUnique = false;
-                break;
+    
+    for (int i = 0; i < possible.size(); i++) {
+        unordered_set<char> us;
+        for (int j = 0; j < possible[i].length(); j++)
+            us.insert(possible[i][j]);
+        
+        bool toAdd = true;
+        for (int j = 0; j < possible.size(); j++) {
+            if (i == j)
+                continue;
+            if (possible[i].length() > possible[j].length()) {
+                int count = 0;
+                for (int k = 0; k < possible[j].length(); k++) {
+                    if (us.find(possible[j][k]) != us.end())
+                        count++;
+                }
+                if (count == possible[j].length()) {
+                    toAdd = false;
+                    break;
+                }
             }
         }
-        if (isUnique)
+        if (toAdd)
             ans.push_back(possible[i]);
     }
     return ans;
